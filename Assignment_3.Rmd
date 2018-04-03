@@ -1,0 +1,47 @@
+---
+title: "Assignment_3"
+author: "Edwison, Marygrace, Gyasi"
+date: "April 2, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r lib , warning=FALSE, message=FALSE}
+library(dplyr)
+library(tidyverse)
+library(ggpubr)
+
+```
+
+
+```{r male, warning=FALSE, message=FALSE}
+surveys_data <-read.csv('surveys.csv')
+DM_data <- filter(surveys_data, species_id == 'DM',sex != '',!is.na(weight),!is.na(hindfoot_length)) %>% select(sex,hindfoot_length,weight)
+
+DM_male <- filter(DM_data, sex == 'M')
+DM_female <- filter(DM_data, sex == 'F')
+
+ggscatter(DM_male, x = "hindfoot_length", y = "weight",title = "Relationship between weight and hindfoot_length", xlab = "Hindfoot_length(mm)", ylab = "weight(gm)",
+          add = "reg.line",  # Add regressin line
+          add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
+          conf.int = TRUE ) + stat_cor(method = "pearson", label.x = 20, label.y = 200)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
